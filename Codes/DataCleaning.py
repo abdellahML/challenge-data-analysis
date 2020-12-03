@@ -48,6 +48,11 @@ def type_converter(property_type: str) -> str:
 
 
 def flanders_wallonia_bruxelles(zip_code: int) -> str:
+    """
+
+    :param zip_code:
+    :return:
+    """
     if (4000 <= zip_code < 5000 or 6600 <= zip_code < 7000 or 1300 <= zip_code < 1500
        or 5000 <= zip_code < 5700 or 6000 <= zip_code < 6600 or 7000 <= zip_code < 8000):
         return "Wallonia"
@@ -61,25 +66,27 @@ def flanders_wallonia_bruxelles(zip_code: int) -> str:
     return np.NAN
 
 
-pd.options.display.max_columns = None
+def open_and_manage(csv_file: str) -> pd.DataFrame:
+    """
+    
+    :param csv_file:
+    :return:
+    """
+    df = pd.read_csv(csv_file)
 
-df = pd.read_csv("../quick_clean.csv")
+    df = df.drop(["Unnamed: 0", "visualisationOption", "transactionType", "short_id"], axis=1)
+    df.rename(columns={"indoor": "nbr_parking_indoor", "outdoor": "nbr_parking_outdoor",
+                       "mètres carrés": "square_metres", "commune": "city", "zip": "zip_code"}, inplace=True)
 
-df = df.drop(["Unnamed: 0", "visualisationOption", "transactionType", "short_id"], axis=1)
-df.rename(columns={"indoor": "nbr_parking_indoor", "outdoor": "nbr_parking_outdoor",
-                   "mètres carrés": "square_metres", "commune": "city", "zip": "zip_code"}, inplace=True)
+    nan_value = float("NaN")
+    df["price"].replace("", nan_value, inplace=True)
+    df.dropna(subset=["price"], inplace=True)
 
-nan_value = float("NaN")
-df["price"].replace("", nan_value, inplace=True)
-df.dropna(subset=["price"], inplace=True)
+    df["price"] = df["price"].apply(price_mean)
+    df["type"] = df["type"].apply(type_converter)
+    df["region"] = df["zip_code"].apply(flanders_wallonia_bruxelles)
+    df = df.applymap(bool_converter)
 
-df["price"] = df["price"].apply(price_mean)
-df["type"] = df["type"].apply(type_converter)
-df["region"] = df["zip_code"].apply(flanders_wallonia_bruxelles)
-df = df.applymap(bool_converter)
+    df["price_by_m2"] = df["price"] / df["square_metres"]
 
-df["price_by_m2"] = df["price"] / df["square_metres"]
-
-print(df.info())
-print(df[["city", "region", "zip_code"]].head(25))
-print(df.shape)
+    return df

@@ -1,6 +1,8 @@
 import pandas as pd
 import numpy as np
 
+from urllib.parse import unquote
+
 
 def price_mean(price: str) -> float:
     """
@@ -81,15 +83,17 @@ def open_and_manage(csv_file: str) -> pd.DataFrame:
     df.rename(columns={"indoor": "nbr_parking_indoor", "outdoor": "nbr_parking_outdoor",
                        "mètres carrés": "square_metres", "commune": "city", "zip": "zip_code"}, inplace=True)
 
-    # Delete rows with Na in prices.
+    # Delete rows with Na in prices and duplicated rows.
     nan_value = float("NaN")
     df["price"].replace("", nan_value, inplace=True)
     df.dropna(subset=["price"], inplace=True)
+    df.duplicated(subset=None, keep="first")
 
     # Type some data and create columns from others.
     df["price"] = df["price"].apply(price_mean)
     df["type"] = df["type"].apply(type_converter)
     df["region"] = df["zip_code"].apply(flanders_wallonia_bruxelles)
+    df["city"] = df["city"].apply(unquote)
     df = df.applymap(bool_converter)
     df["price_by_m2"] = df["price"] / df["square_metres"]
 

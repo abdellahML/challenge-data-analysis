@@ -1,12 +1,16 @@
 import pandas as pd
 import numpy as np
 
+from urllib.parse import unquote
+
 
 def price_mean(price: str) -> float:
     """
-
-    :param price:
-    :return:
+    Change the string price in integer.
+    If there is only a number it changes only the type.
+    If there is a min and a max it takes the mean.
+    :param price: string with the price of the ad.
+    :return: the price or the mean with an integer.
     """
     if "-" in price:
         min_max_price = price.split()
@@ -21,9 +25,9 @@ def price_mean(price: str) -> float:
 
 def bool_converter(boolean: bool) -> int:
     """
-
-    :param boolean:
-    :return:
+    Changes the boolean values in 1 or 0.
+    :param boolean: bool.
+    :return: 1 if True, 0 if False.
     """
     if boolean is False:
         return 0
@@ -35,9 +39,9 @@ def bool_converter(boolean: bool) -> int:
 
 def type_converter(property_type: str) -> str:
     """
-
-    :param property_type:
-    :return:
+    change the property_type to have only two values.
+    :param property_type: str, property_type in the df.
+    :return: apartment or house.
     """
     if property_type == "apartment group":
         return "apartment"
@@ -49,9 +53,9 @@ def type_converter(property_type: str) -> str:
 
 def flanders_wallonia_bruxelles(zip_code: int) -> str:
     """
-
-    :param zip_code:
-    :return:
+    based on the zip_code, set the region of the house/apartment.
+    :param zip_code: The zip_code of the ad.
+    :return: The name of the region.
     """
     if (4000 <= zip_code < 5000 or 6600 <= zip_code < 7000 or 1300 <= zip_code < 1500
        or 5000 <= zip_code < 5700 or 6000 <= zip_code < 6600 or 7000 <= zip_code < 8000):
@@ -68,25 +72,45 @@ def flanders_wallonia_bruxelles(zip_code: int) -> str:
 
 def open_and_manage(csv_file: str) -> pd.DataFrame:
     """
-    
-    :param csv_file:
-    :return:
+    Take the path to our csv file to open, clean and manage it.
+    :param csv_file: str, path to the csv file.
+    :return: The pandas DataFrame.
     """
     df = pd.read_csv(csv_file)
 
+    # Rename and drop some columns.
     df = df.drop(["Unnamed: 0", "visualisationOption", "transactionType", "short_id"], axis=1)
     df.rename(columns={"indoor": "nbr_parking_indoor", "outdoor": "nbr_parking_outdoor",
                        "mètres carrés": "square_metres", "commune": "city", "zip": "zip_code"}, inplace=True)
 
+    # Delete rows with Na in prices and duplicated rows.
     nan_value = float("NaN")
     df["price"].replace("", nan_value, inplace=True)
     df.dropna(subset=["price"], inplace=True)
+    df.duplicated(subset=None, keep="first")
 
+    # Type some data and create columns from others.
     df["price"] = df["price"].apply(price_mean)
     df["type"] = df["type"].apply(type_converter)
     df["region"] = df["zip_code"].apply(flanders_wallonia_bruxelles)
+    df["city"] = df["city"].apply(unquote)
     df = df.applymap(bool_converter)
-
     df["price_by_m2"] = df["price"] / df["square_metres"]
+
+    # Create one hot encode columns.
+    df["region"] = pd.Categorical(df["region"])
+    df["type"] = pd.Categorical(df["type"])
+    df["subtype"] = pd.Categorical(df["subtype"])
+    df["cuisine_type"] = pd.Categorical(df["cuisine_type"])
+    df["condition"] = pd.Categorical(df["condition"])
+    df["heatingType"] = pd.Categorical(df["heatingType"])
+    dfdummies = pd.get_dummies(df["region"], prefix="region")
+    dfdummies1 = pd.get_dummies(df["type"], prefix="type")
+    dfdummies2 = pd.get_dummies(df["subtype"], prefix="subtype")
+    dfdummies3 = pd.get_dummies(df["cuisine_type"], prefix="cuisine")
+    dfdummies4 = pd.get_dummies(df["condition"], prefix="condition")
+    dfdummies5 = pd.get_dummies(df["heatingType"], prefix="heating")
+
+    df = pd.concat([df, dfdummies, dfdummies5, dfdummies4, dfdummies3, dfdummies2, dfdummies1], axis=1)
 
     return df

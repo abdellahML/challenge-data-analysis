@@ -97,6 +97,7 @@ def open_and_manage(csv_file: str) -> pd.DataFrame:
     df = df.applymap(bool_converter)
     df["price_by_m2"] = df["price"] / df["square_metres"]
 
+
     # Create one hot encode columns.
     df["region"] = pd.Categorical(df["region"])
     df["type"] = pd.Categorical(df["type"])

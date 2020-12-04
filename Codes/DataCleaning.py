@@ -70,6 +70,38 @@ def flanders_wallonia_bruxelles(zip_code: int) -> str:
     return np.NAN
 
 
+def municipalities(zip_code: int) -> str:
+    """
+
+    :param zip_code:
+    :return:
+    """
+    if 1000 <= zip_code < 1300:
+        return "Bruxelles"
+    elif 4000 <= zip_code < 5000:
+        return "Liège"
+    elif 6600 <= zip_code < 7000:
+        return "Luxembourg"
+    elif 1300 <= zip_code < 1500:
+        return "Brabant Wallon"
+    elif 5000 <= zip_code < 5700:
+        return "Namur"
+    elif 6000 <= zip_code < 6600 or 7000 <= zip_code < 8000:
+        return "Hainaut"
+    elif 1500 <= zip_code < 2000 or 3000 <= zip_code < 3500:
+        return "Brabant Flamand"
+    elif 2000 <= zip_code < 3000:
+        return "Anvers"
+    elif 3500 <= zip_code < 4000:
+        return "Limbourg"
+    elif 8000 <= zip_code < 9000:
+        return "Flandre Occidentale"
+    elif 9000 <= zip_code < 10000:
+        return "Flandre Orientale"
+    else:
+        return pd.NAN
+
+
 def open_and_manage(csv_file: str) -> pd.DataFrame:
     """
     Take the path to our csv file to open, clean and manage it.
@@ -93,6 +125,7 @@ def open_and_manage(csv_file: str) -> pd.DataFrame:
     df["price"] = df["price"].apply(price_mean)
     df["type"] = df["type"].apply(type_converter)
     df["region"] = df["zip_code"].apply(flanders_wallonia_bruxelles)
+    df["municipalities"] = df["zip_code"].apply(municipalities)
     df["city"] = df["city"].apply(unquote)
     df = df.applymap(bool_converter)
     df["price_by_m2"] = df["price"] / df["square_metres"]

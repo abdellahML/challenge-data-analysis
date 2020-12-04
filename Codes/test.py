@@ -7,5 +7,3 @@ from Main_abdellah import abdellah
 
 
 abdellah('~/challenge-data-analysis/quick_clean.csv')
-#left=0.255,
-#right=0.99,

@@ -1,15 +1,35 @@
-# Data analysis
+# Context
+
+This project is the continuation of the scraping project.  
+In this previous project, we scrap the immoweb.be website.  
+You can find the detail of this previous project [here](https://github.com/Ezamey/challenge-collecting-data).  
 
 ## Description
 
+In this project we clean, analyse and interpret the data from the immoweb website.  
+You can fin the pdf with some explanation of the result, but you can have more result if you run the files by yourself.  
+
 ## Usage
 
-## Authors
+The files to run is the interpretation.ipynb  
+In this file, the dataset is cleaned, you can see the correlation matrix and the visualitation for the best and worst region, province and cities.  
 
-Axelle ..., junior AI developer at BeCode;
+## Python Libraries
 
-Abdellah ..., junior AI developer at BeCode;
+We use pandas for cleaning the data, and seaborn to display these data.
+To install it, use the command below:
 
-Melvin Leroy, junior AI developer at BeCode.
+```python -m pip install -r requirements.txt```
 
-## Project status
+*Links to the official documentation of libraries :*
+- [Pandas](https://pandas.pydata.org/docs/reference/index.html#api)  
+- [Seaborn](http://seaborn.pydata.org/api.html)   
+  
+-----
+### Authors
+
+*Axelle Paquet, junior AI developer at BeCode;*
+
+*Abdellah ..., junior AI developer at BeCode;*
+
+*Melvin Leroy, junior AI developer at BeCode.*

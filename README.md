@@ -7,12 +7,12 @@ You can find the detail of this previous project [here](https://github.com/Ezame
 ## Description
 
 In this project we clean, analyse and interpret the data from the immoweb website.  
-You can find the pdf with some explanation of the result, but you can have more result if you run the files by yourself.  
+You can find the pdf with some explanation of the result, but you can have more visualization if you run the files by yourself.  
 
 ## Usage
 
 The files to run is the interpretation.ipynb  
-In this file, the dataset is cleaned, you can see the correlation matrix and the visualitation for the best and worst region, province and cities.  
+In this file, the dataset is cleaned, you can see the correlation matrix and the visualization for the best and worst region, province and cities.  
 
 ## Python Libraries
 

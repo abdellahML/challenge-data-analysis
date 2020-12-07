@@ -12,16 +12,16 @@ You can find the [challenge-data-analysis.pdf](challenge-data-analysis.pdf) with
 
 ## Usage
 
-The files to run is the `interpretation.ipynb` and the `abdellah.ipynd`.
+The files to run is the `interpretation.ipynb` and the `Main_abdellah.py`.
 
 The first is about some questions related to the belgian real estate market.
-The dataset is cleaned. You can see the correlation matrix and the visualizations of the most and less expensive region, province and cities, respectively.
+The dataset is cleaned. You can see the correlation and the visualization of the most and less expensive region, province and cities, respectively.
 
 The second contains the analysis of the data.
 For the qualitative data and the quantitative data, the correlation between variables, between variables and the target variable are calculated and displayed.
-An overall data analysis is done to collect relevant informations.
+An individual and an overall data analysis is done to collect relevant informations, 
 
-## The most explanatory variables based on this data anlysis
+## The most explanatory variables based on this data analysis
 the property's price, the number of rooms,the construction year, the flanders region localisation and the wallonia region localisation variables are the most influential based on their individual correlation with the target variable, the price per square meter variable.
 
 

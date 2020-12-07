@@ -7,7 +7,7 @@ You can find the detail of this previous project [here](https://github.com/Ezame
 ## Description
 
 In this project we clean, analyse and interpret the data from the immoweb website.  
-You can fin the pdf with some explanation of the result, but you can have more result if you run the files by yourself.  
+You can find the pdf with some explanation of the result, but you can have more result if you run the files by yourself.  
 
 ## Usage
 

@@ -20,7 +20,7 @@ In this file, the dataset is cleaned, you can see the correlation matrix and the
 The second is more about the analysis of the datas.
 It shows the correlation matrix between our datas and analyse the links between them.
 
-##The most explanatory variables based on this data anlysis:
+## The most explanatory variables based on this data anlysis:
 the property's price, the number of rooms,the construction year, the flanders region localisation and the wallonia region localisation variables are the most influential based on their individual correlation with the target variable, the price per square meter variable.
 
 

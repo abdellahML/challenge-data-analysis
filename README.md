@@ -17,9 +17,6 @@ In this file, the dataset is cleaned, you can see the correlation matrix and the
 ## Python Libraries
 
 We use pandas for cleaning the data, and seaborn to display these data.
-To install it, use the command below:
-
-```python -m pip install -r requirements.txt```
 
 *Links to the official documentation of libraries :*
 - [Pandas](https://pandas.pydata.org/docs/reference/index.html#api)  

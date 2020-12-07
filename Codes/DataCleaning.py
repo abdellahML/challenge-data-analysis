@@ -72,9 +72,9 @@ def flanders_wallonia_bruxelles(zip_code: int) -> str:
 
 def municipalities(zip_code: int) -> str:
     """
-
-    :param zip_code:
-    :return:
+    Determine the province from the zip_code.
+    :param zip_code: zip_code of the ad.
+    :return: Add the province to an other column.
     """
     if 1000 <= zip_code < 1300:
         return "Bruxelles"
@@ -102,6 +102,26 @@ def municipalities(zip_code: int) -> str:
         return pd.NAN
 
 
+def city_name(dataframe: pd.DataFrame) -> pd.DataFrame:
+    """
+    Change the name of the cities based on the zip_codes.
+    :param dataframe: The dataframe we need to change.
+    :return: The dataframe changed
+    """
+    dict = {}
+
+    for i in dataframe["zip_code"].unique():
+        df = dataframe.loc[dataframe["zip_code"] == i]
+        new_value = df["city"].iloc[0]
+        dict[i] = new_value
+
+    dataframe = dataframe.drop(["city"], axis=1)
+    dataframe["city"] = dataframe["zip_code"]
+    dataframe["city"] = dataframe["city"].map(dict)
+
+    return dataframe
+
+
 def open_and_manage(csv_file: str) -> pd.DataFrame:
     """
     Take the path to our csv file to open, clean and manage it.
@@ -127,6 +147,7 @@ def open_and_manage(csv_file: str) -> pd.DataFrame:
     df["region"] = df["zip_code"].apply(flanders_wallonia_bruxelles)
     df["municipalities"] = df["zip_code"].apply(municipalities)
     df["city"] = df["city"].apply(unquote)
+    df = city_name(df)
     df = df.applymap(bool_converter)
     df["price_by_m2"] = df["price"] / df["square_metres"]
 

@@ -12,7 +12,7 @@ You can find the [challenge-data-analysis.pdf](challenge-data-analysis.pdf) with
 
 ## Usage
 
-The files to run is the `interpretation.ipynb` and the `Main_abdellah.py`.
+You have to run the `interpretation.ipynb` file, import the function `abdellah` from `Main_abdellah.py`and run it.
 
 The first is about some questions related to the belgian real estate market.
 The dataset is cleaned. You can see the correlation and the visualization of the most and less expensive region, province and cities, respectively.
